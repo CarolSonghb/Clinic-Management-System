@@ -22,9 +22,20 @@ def btnShowDoc():
     for doctor in clinic.allDoctors:
         listbox_doctor.insert(tk.END, str(doctor))
 
+def btnAssignDoc():
+    #get selected patient
+    selPatientIndex = listbox_patient.curselection()
+    selectedPatient = listbox_patient.get(selPatientIndex)
+    # only pass the name, not the ID number
+    selectedPaName = selectedPatient.split(" ", 1)[1]
 
-# def btnAssignDoc():
-#     #get selected patient
+    #get selected doctor
+    selDocIndex = listbox_doctor.curselection()
+    selectedDoc = listbox_doctor.get(selDocIndex)
+    selectedDocName = selectedDoc.split(" ", 1)[1]
+
+    clinic.assignDoctor(str(selectedPaName), str(selectedDocName))
+
 
 
 # set the frame to place patient and doctor list widget
@@ -47,7 +58,7 @@ listbox_patient = tk.Listbox(frm_patientCreate, exportselection=0, selectmode=tk
 listbox_patient.pack(fill="x", padx=20, pady=5, side=tk.TOP)
 
 # Create and pack the "Show Patients" button
-button = ttk.Button(frm_patientCreate, text="Show Patients", command=btnShowPa)
+button = ttk.Button(frm_patientCreate, text="Display Patients", command=btnShowPa)
 button.pack(fill="x", padx=5, pady=5, side=tk.TOP)  # Place it under the listbox
 
 # add the widgets for Doctor List
@@ -65,8 +76,11 @@ listbox_doctor = tk.Listbox(frm_doctorCreate, exportselection=0, selectmode=tk.B
 listbox_doctor.pack(fill="x", padx=20, pady=5, side=tk.TOP)
 
 # Create and pack the "Show Doctors" button
-button = ttk.Button(frm_doctorCreate, text="Show Doctors", command=btnShowDoc)
+button = ttk.Button(frm_doctorCreate, text="Display Doctors", command=btnShowDoc)
 button.pack(fill="x", padx=5, pady=5, side=tk.TOP)  # Place it under the listbox
+
+button = ttk.Button(lefttop_frame, text="Assign Doctor", command=btnAssignDoc)
+button.pack(fill="x", padx=5, pady=5, side=tk.TOP)
 
 
 root.mainloop()

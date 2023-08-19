@@ -30,7 +30,7 @@ class clinicController:
         for aPatient in self.allPatients:
             if aPatient.patientFullName == patientFullName:
                 return aPatient
-            return None
+        return None
 
     def findDoctor(self, docFullName):
         for aDoctor in self.allDoctors:
@@ -38,4 +38,20 @@ class clinicController:
                 return aDoctor
         return None
     
-    def 
+    def assignDoctor(self, paName, docName):
+        aPatient = self.findPatient(paName)
+        print(aPatient)
+        aDoctor = self.findDoctor(docName)
+        print(aDoctor)
+        pDoctor = aPatient.myDoctor
+        if aPatient.myDoctor == "None":
+            aPatient.myDoctor = aDoctor.docFullName
+        else:
+            prevDotocr = self.findDoctor(pDoctor)
+            prevDotocr.removePatient(aPatient)
+            aPatient.myDoctor = aDoctor.docFullName
+        aDoctor.addPatient(aPatient)
+        print(f"Patient {aPatient} is Assigned to Dcotor {aDoctor}!")
+
+
+

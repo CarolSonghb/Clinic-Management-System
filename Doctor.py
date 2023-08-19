@@ -7,6 +7,7 @@ class Doctor:
         self.__doctorLName = docLastname
         self.__doctorSpec = docSpecialty
         self.__patientList = []
+        self.__consulList = []
         Doctor.nextID += 1
 
     @property
@@ -34,6 +35,20 @@ class Doctor:
         names = full_name.split()
         self.__doctorFName = names[0]
         self.__doctorLName = names[-1]
+
+    @property
+    def patientList(self):
+        return self.__patientList
+    
+    @property
+    def consulList(self):
+        return self.__consulList
+    
+    def addPatient(self, aPatient):
+        self.patientList.append(aPatient)
+
+    def removePatient(self, aPatient):
+        self.patientList.remove(aPatient)
 
     def __str__(self):
         return str(self.doctorID) + " " + self.docFullName
