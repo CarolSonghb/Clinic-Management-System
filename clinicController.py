@@ -40,9 +40,7 @@ class clinicController:
     
     def assignDoctor(self, paName, docName):
         aPatient = self.findPatient(paName)
-        print(aPatient)
         aDoctor = self.findDoctor(docName)
-        print(aDoctor)
         pDoctor = aPatient.myDoctor
         if aPatient.myDoctor == "None":
             aPatient.myDoctor = aDoctor.docFullName
@@ -52,6 +50,11 @@ class clinicController:
             aPatient.myDoctor = aDoctor.docFullName
         aDoctor.addPatient(aPatient)
         print(f"Patient {aPatient} is Assigned to Dcotor {aDoctor}!")
+
+    def bookConsultation(self, conDate, conDoc, conPa):
+        aPatient = self.findPatient(conPa)
+        aDoctor = self.findDoctor(conDoc)
+
 
 
 

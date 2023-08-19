@@ -1,3 +1,5 @@
+from Consultation import *
+
 class Doctor:
     nextID = 100
 
@@ -50,5 +52,6 @@ class Doctor:
     def removePatient(self, aPatient):
         self.patientList.remove(aPatient)
 
+    
     def __str__(self):
         return str(self.doctorID) + " " + self.docFullName
