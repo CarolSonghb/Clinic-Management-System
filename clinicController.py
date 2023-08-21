@@ -1,5 +1,6 @@
 from Patient import *
 from Doctor import *
+from Consultation import *
 
 
 class clinicController:
@@ -51,10 +52,21 @@ class clinicController:
         aDoctor.addPatient(aPatient)
         print(f"Patient {aPatient} is Assigned to Dcotor {aDoctor}!")
 
-    def bookConsultation(self, conDate, conDoc, conPa):
+    def bookConsultation(self, conDoc, conPa, conDate, conReason, conFee):
         aPatient = self.findPatient(conPa)
         aDoctor = self.findDoctor(conDoc)
 
+        if aPatient and aDoctor:
+            newConsultation = Consultation(aDoctor.docFullName, aPatient.patientFullName)
+            newConsultation.consulDate = conDate
+            newConsultation.consulReason = conReason
+            newConsultation.consulFee = conFee
 
+            aPatient.consulList.append(newConsultation)
+            aDoctor.consulList.append(newConsultation)
+
+            print(newConsultation)
+        else:
+            print("Error: Patient or doctor not found!")
 
 

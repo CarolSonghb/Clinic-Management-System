@@ -1,14 +1,10 @@
 class Consultation:
-    def __init__(self, date, doctor, patient):
-        self.__myCDate = date
+    def __init__(self, doctor, patient):
         self.__myCDoctor = doctor
         self.__myCPatient = patient
+        self.__myCDate = "None"
         self.__myCReason = "None"
         self.__myFee = None
-    
-    @property
-    def consulDate(self):
-        return self.__myCDate
     
     @property
     def consulDoctor(self):
@@ -18,6 +14,14 @@ class Consultation:
     def consulPatient(self):
         return self.__myCPatient
     
+    @property
+    def consulDate(self):
+        return self.__myCDate
+    
+    @consulDate.setter
+    def consulDate(self, aDate):
+        self.__myCDate = aDate
+
     @property
     def consulReason(self):
         return self.__myCReason
@@ -35,4 +39,5 @@ class Consultation:
         self.__myFee = newFee
 
     def __str__(self):
-        return "Date: " + self.consulDate + "Doctor: " + self.consulDoctor + "Patient: " + self.consulPatient + "Reason: " + self.consulReason + "Fee: " + self.consulFee
+        return "Date: " + self.consulDate + " Doctor: " + self.consulDoctor + " Patient: " + self.consulPatient + " Reason: " + self.consulReason + " Fee: " + self.consulFee
+    
