@@ -42,6 +42,10 @@ class Doctor:
     def patientList(self):
         return self.__patientList
     
+    def aPatient(self):
+        for aPatient in self.patientList:
+            return aPatient
+    
     @property
     def consulList(self):
         return self.__consulList
@@ -51,7 +55,11 @@ class Doctor:
 
     def removePatient(self, aPatient):
         self.patientList.remove(aPatient)
+    
+    def consulInfo(self):
+        for aConsultation in self.consulList:
+            return aConsultation.consulDate + " " + aConsultation.consulReason + " " + aConsultation.consulPatient + " $" + aConsultation.consulFee
 
     
     def __str__(self):
-        return str(self.doctorID) + " " + self.docFullName
+        return str(self.doctorID) + " " + self.docFullName + " - " + self.docSpecialty

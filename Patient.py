@@ -1,3 +1,5 @@
+from Consultation import *
+
 class Patient:
     nextID = 1000
 
@@ -42,6 +44,17 @@ class Patient:
     @property
     def consulList(self):
         return self.__consulList
+    
+    def consulInfo(self):
+        for aConsultation in self.consulList:
+            return aConsultation.consulDoctor + " " + aConsultation.consulDate + " " + aConsultation.consulReason + " $" + aConsultation.consulFee
+    
+    def totalconFee(self):
+        total_fee = 0
+        for aConsultation in self.consulList:
+            total_fee += float(aConsultation.consulFee)
+        return "{:.2f}".format(total_fee)
+
 
     def __str__(self):
         return str(self.patientID) + " " + self.patientFullName

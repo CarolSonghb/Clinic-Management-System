@@ -39,5 +39,5 @@ class Consultation:
         self.__myFee = newFee
 
     def __str__(self):
-        return "Date: " + self.consulDate + " Doctor: " + self.consulDoctor + " Patient: " + self.consulPatient + " Reason: " + self.consulReason + " Fee: " + self.consulFee
+        return "Date: " + self.consulDate + " Doctor: " + self.consulDoctor + " Patient: " + self.consulPatient + " Reason: " + self.consulReason + " Fee: $" + self.consulFee
     

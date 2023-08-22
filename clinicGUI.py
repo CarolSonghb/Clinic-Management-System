@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter.messagebox import *
 from clinicController import *
-from datetime import datetime
+import re
 
 clinic = clinicController()
 clinic.newPatient()
@@ -91,10 +91,91 @@ def btnAddConsul():
             showwarning("Warning", "Please fill in all consultation details.")
             return 
         
+        # Validate conDate format using regex
+        date_pattern = re.compile(r"^\d{2}/\d{2}/\d{4}$")
+        if not date_pattern.match(conDate):
+            showwarning("Warning", "Please enter the date in dd/mm/yyyy format.")
+            return
+        
+        # check if conFee is a float number
+        try:
+            conFee = float(conFee)
+        except ValueError:
+            showwarning("Warning", "Consultation fee must be a valid number.")
+            return
+        
+        # format conFee with two decimal places
+        conFee = "{:.2f}".format(float(conFee))
+
         clinic.bookConsultation(selectedDocName, selectedPaName, conDate, conReason, conFee)
         showinfo("Message", "The new consultation has been added!")
 
+def searchPa():
+    # Get the search query from the entry widget
+    query = searchPa_entry.get().lower()
 
+    # Hide previous search results
+    for widget in searchResultFrame.winfo_children():
+        widget.destroy()
+
+    # List to store matching patients
+    matchingPatients = []
+
+    for patient in clinic.allPatients:
+        if query in patient.patientFullName.lower(): 
+            matchingPatients.append(patient)
+
+    # Display search results in the frame
+    for i, matchingPatient in enumerate(matchingPatients, start=1):
+        result_label = tk.Label(searchResultFrame, text=str(matchingPatient))
+        result_label.grid(row=i, column=0, padx=10, pady=5)
+        doctor_label = tk.Label(searchResultFrame, text=f"Doctor: {matchingPatient.myDoctor}")
+        doctor_label.grid(row=i+1, column=0)
+        consul_label = tk.Label(searchResultFrame, text="Consultations")
+        consul_label.grid(row=i+2, column=0)
+        consul_info = tk.Label(searchResultFrame, text=str(matchingPatient.consulInfo()))
+        consul_info.grid(row=i+3, column=0)
+        fee_label = tk.Label(searchResultFrame, text=f"Total Fees Due: ${matchingPatient.totalconFee()}")
+        fee_label.grid(row=i+4, column=0)
+
+
+    if not matchingPatients:
+        no_result_label = tk.Label(searchResultFrame, text="No matching patients found.")
+        no_result_label.grid(row=1, column=0, padx=10, pady=5)
+
+def searchDoc():
+    # Get the search query from the entry widget
+    query = searchDoc_entry.get().lower()
+
+    # Hide previous search results
+    for widget in searchResultFrame.winfo_children():
+        widget.destroy()
+
+    # List to store matching patients
+    matchingDocs = []
+
+    for doctor in clinic.allDoctors:
+        if query in doctor.docFullName.lower(): 
+            matchingDocs.append(doctor)
+
+    # Display search results in the frame
+    for i, matchingDoc in enumerate(matchingDocs, start=1):
+        result_label = tk.Label(searchResultFrame, text=str(matchingDoc))
+        result_label.grid(row=i, column=0, padx=10, pady=5)
+        pa_label = tk.Label(searchResultFrame, text="Patient List")
+        pa_label.grid(row=i+1, column=0)
+        paList_label = tk.Label(searchResultFrame, text=str(matchingDoc.aPatient()))
+        paList_label.grid(row=i+2, column=0)
+        consul_label = tk.Label(searchResultFrame, text="Consultations")
+        consul_label.grid(row=i+3, column=0)
+        consul_info = tk.Label(searchResultFrame, text=str(matchingDoc.consulInfo()))
+        consul_info.grid(row=i+4, column=0)
+
+
+
+    if not matchingDocs:
+        no_result_label = tk.Label(searchResultFrame, text="No matching Doctors found.")
+        no_result_label.grid(row=1, column=0, padx=10, pady=5)
     
 
 #############################
@@ -136,6 +217,7 @@ label_doctor.grid(row=1, column=1)
 
 # Create and grid the listbox for doctors
 listbox_doctor = tk.Listbox(first_frame, exportselection=0, selectmode=tk.BROWSE)
+listbox_doctor.config(width=30)
 listbox_doctor.grid(row=2, column=1)
 #bind the patient selection function to the listbox
 listbox_doctor.bind("<<ListboxSelect>>", doctorSelect)
@@ -194,19 +276,32 @@ buttonAddCons.grid(row=0, column=1, padx=100)
 middleFrame2 = tk.Label(root)
 middleFrame2.pack()
 
-searchPa_entry=tk.Entry(middleFrame2)
-searchPa_entry.grid(row=0, column=0)
-button_searchPa = tk.Button(middleFrame2, text="Search Patient")
-button_searchPa.grid(row=0, column=1)
+searchFrame = tk.Label(middleFrame2)
+searchFrame.grid(row=0, column=0)
 
-searchDoc_entry=tk.Entry(middleFrame2)
-searchDoc_entry.grid(row=1, column=0)
-button_searchDoc = tk.Button(middleFrame2, text="Search Doctor")
-button_searchDoc.grid(row=1, column=1)
+searchTitle = tk.Label(searchFrame, text="Search a Patient/Doctor to see their details", font=("Arial", 14, "bold"))
+searchTitle.grid(row=0, column=0)
 
+searchPa_entry=tk.Entry(searchFrame)
+searchPa_entry.grid(row=1, column=0)
 
 
+button_searchPa = tk.Button(searchFrame, text="Search Patient", command=searchPa)
+button_searchPa.grid(row=1, column=1)
 
+searchDoc_entry=tk.Entry(searchFrame)
+searchDoc_entry.grid(row=2, column=0)
+button_searchDoc = tk.Button(searchFrame, text="Search Doctor", command=searchDoc)
+button_searchDoc.grid(row=2, column=1)
+
+searchReminder = tk.Label(searchFrame, text="Please type in full name to search")
+searchReminder.grid(row=3, column=0)
+
+searchLabel = tk.Label(searchFrame, text="Search results displayed below...")
+searchLabel.grid(row=4, column=0)
+# Create a frame to display search results
+searchResultFrame = tk.LabelFrame(searchFrame)
+searchResultFrame.grid(row=5, column=0)
 
 
 
