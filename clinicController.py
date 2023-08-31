@@ -7,6 +7,7 @@ class clinicController:
     def __init__(self):
         self.allPatients = []
         self.allDoctors = []
+        self.allConsultations = []
 
     def newPatient(self):
         patientFile = open("Patient.txt", "r")
@@ -64,6 +65,7 @@ class clinicController:
 
             aPatient.consulList.append(newConsultation)
             aDoctor.consulList.append(newConsultation)
+            self.allConsultations.append(newConsultation)
 
             print(newConsultation)
         else:

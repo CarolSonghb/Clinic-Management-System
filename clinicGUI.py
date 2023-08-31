@@ -164,18 +164,11 @@ def searchDoc():
     # Display search results in the frame
     for matchingDoc in matchingDocs:
         searchResultBox.insert(tk.END, str(matchingDoc))
-        # searchResultBox.insert(tk.END, "")
-        # searchResultBox.insert(tk.END, "Patient List")
-        # searchResultBox.insert(tk.END, str(matchingDoc.aPatient()))
-        # searchResultBox.insert(tk.END, "")
-        # searchResultBox.insert(tk.END, "Consultations")
-        # searchResultBox.insert(tk.END, str(matchingDoc.consulInfo()))
         searchResultBox.bind("<<ListboxSelect>>", doctorSelect)
-
-
 
     if not matchingDocs:
         searchResultBox.insert(tk.END, "No matching Doctors found.")
+
 
 def viewPatient():
     selPatient = selPa_label.get()
@@ -225,6 +218,23 @@ def viewDoctor():
         else:
             showerror("Error", "No matching doctor found.")
 
+def consulReport():
+    report_window = tk.Toplevel(root)
+    report_window.title("Consultation Report")
+    report_window.geometry("600x400")
+    report_info = ""
+
+    if clinic.allConsultations:
+        report_info = "\n\n".join(str(aReport) for aReport in clinic.allConsultations)
+        report_label = tk.Label(report_window, text=report_info)
+        report_label.pack()
+    else:
+        print("no report")
+        showwarning("Warning", "No consultation has been added.")
+    
+def exitRoot():
+    showinfo("Close", "Thank you for using Clinic Management System!")
+    root.destroy()
 
     
 
@@ -373,10 +383,10 @@ searchResultBox.grid(row=4, column=0, padx=20)
 reportFrame = tk.Label(bottomFrame)
 reportFrame.grid(row=0, column=1)
 
-buttonReport = tk.Button(reportFrame, text = "Consultation Report", width=20, height=2)
+buttonReport = tk.Button(reportFrame, text = "Consultation Report", command=consulReport, width=20, height=2)
 buttonReport.grid(row=0, column=0)
 
-buttonExit = tk.Button(reportFrame, text = "Exit", width=20, height=2)
+buttonExit = tk.Button(reportFrame, text = "Exit", command=exitRoot, width=20, height=2)
 buttonExit.grid(row=1, column=0)
 
 root.mainloop()
