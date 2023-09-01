@@ -2,8 +2,8 @@ class Consultation:
     def __init__(self, doctor, patient):
         self.__myCDoctor = doctor
         self.__myCPatient = patient
-        self.__myCDate = "None"
-        self.__myCReason = "None"
+        self.__myCDate = None
+        self.__myCReason = None
         self.__myFee = None
     
     @property

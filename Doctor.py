@@ -1,8 +1,6 @@
-from Consultation import *
-
 class Doctor:
-    nextID = 100
 
+    nextID = 100
     def __init__(self, docFirstname, docLastname, docSpecialty):
         self.__doctorID = Doctor.nextID
         self.__doctorFName = docFirstname
@@ -30,7 +28,7 @@ class Doctor:
 
     @property
     def docFullName(self):
-        return self.__doctorFName + " " + self.__doctorLName
+        return self.docFName + " " + self.docLName
 
     @docFullName.setter
     def docFullName(self, full_name):
@@ -46,15 +44,15 @@ class Doctor:
         for aPatient in self.patientList:
             return aPatient
     
-    @property
-    def consulList(self):
-        return self.__consulList
-    
     def addPatient(self, aPatient):
         self.patientList.append(aPatient)
 
     def removePatient(self, aPatient):
         self.patientList.remove(aPatient)
+    
+    @property
+    def consulList(self):
+        return self.__consulList
     
     def consulInfo(self):
         for aConsultation in self.consulList:

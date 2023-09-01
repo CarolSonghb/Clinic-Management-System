@@ -1,13 +1,11 @@
-from Consultation import *
-
 class Patient:
-    nextID = 1000
 
+    nextID = 1000
     def __init__(self, paFirstname, paLastname):
         self.__patientID = Patient.nextID
         self.__patientFName = paFirstname
         self.__patientLName = paLastname
-        self.__myDoctor = "None"
+        self.__myDoctor = None
         self.__consulList = []
         Patient.nextID += 1
 

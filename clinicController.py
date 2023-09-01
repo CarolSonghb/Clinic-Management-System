@@ -44,7 +44,7 @@ class clinicController:
         aPatient = self.findPatient(paName)
         aDoctor = self.findDoctor(docName)
         pDoctor = aPatient.myDoctor
-        if aPatient.myDoctor == "None":
+        if aPatient.myDoctor is None :
             aPatient.myDoctor = aDoctor.docFullName
         else:
             prevDotocr = self.findDoctor(pDoctor)
@@ -70,5 +70,34 @@ class clinicController:
             print(newConsultation)
         else:
             print("Error: Patient or doctor not found!")
+    
+    def searchPatients(self, query):
+        # Logic to search patients based on the query
+        matchingPatients = []
 
+        for patient in self.allPatients:
+            if (
+                query in patient.patientFName.lower()
+                or query in patient.patientLName.lower()
+                or query in patient.patientFullName.lower()
+            ):
+                matchingPatients.append(patient)
+
+        return matchingPatients
+    
+    def searchDoctors(self, query):
+        # Logic to search doctors based on the query
+        matchingDoctors = []
+
+        for doctor in self.allDoctors:
+            if (
+                query in doctor.docFullName.lower()
+                or query in doctor.docFName.lower()
+                or query in doctor.docLName.lower()
+            ):
+                matchingDoctors.append(doctor)
+
+        return matchingDoctors
+    
+    
 
