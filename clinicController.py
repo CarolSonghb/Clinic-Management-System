@@ -1,6 +1,4 @@
-from Patient import *
-from Doctor import *
-from Consultation import *
+from Models import *
 
 
 class clinicController:
@@ -98,6 +96,39 @@ class clinicController:
                 matchingDoctors.append(doctor)
 
         return matchingDoctors
+    
+    def getPatientInfo(self, patientFullName):
+        aPatient = self.findPatient(patientFullName)
+        # Get the assigned doctor for the patient
+        assignedDocName = aPatient.myDoctor
+
+        # Find the corresponding doctor object
+        assignedDoc = self.findDoctor(assignedDocName)
+
+        patient_info = f"Patient Information\n\n\n"
+        patient_info += f"Patient: {aPatient}\n\n"
+        patient_info += f"Doctor: \n{assignedDoc}\n\n"
+        patient_info += f"Consultations:\n{aPatient.consulInfo()}\n\n"
+        patient_info += f"Total Fees Due: ${aPatient.totalconFee()}"
+        return patient_info
+    
+    def getDocInfo(self, doctorFullName):
+        aDoctor = self.findDoctor(doctorFullName)
+        doctor_info = f"Doctor Information\n\n\n"
+        doctor_info += f"{aDoctor}\n\n"
+        doctor_info += f"Patient List\n{aDoctor.aPatient()}\n"
+        doctor_info += f"\nConsultations\n{aDoctor.consulInfo()}\n\n"
+        return doctor_info
+    
+    def consulReport(self):
+        # calculate the sum of all consultation fees
+        total_fee = 0
+        for consultation in self.allConsultations:
+            total_fee += float(consultation.consulFee)
+        report_info = ""
+        report_info = "\n\n".join(str(aReport) for aReport in self.allConsultations)
+        
+        return f"{report_info} \n\n Total Fees: ${str(total_fee)}"
     
     
 

@@ -4,15 +4,14 @@ from tkinter.messagebox import *
 from clinicController import *
 import re
 
-clinic = clinicController()
-clinic.newPatient()
-clinic.newDoctor()
-
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("Clinic Management System")
     root.geometry("1200x800")
     root.resizable(width=False, height=False)
+    clinic = clinicController()
+    clinic.newPatient()
+    clinic.newDoctor()
 
 
 ######################
@@ -31,30 +30,25 @@ def btnShowDoc():
 
 # handel selected patient and doctor and return their full names
 def selectPaDoc():
-    # get selected patient
-    selPatientIndex = listbox_patient.curselection()
-    # get selected doctor
-    selDocIndex = listbox_doctor.curselection()
+    selectedPatient = selPa_label.get()
+    selectedDoctor = selDoc_label.get()
 
-    # display a warning if the user hasn't chosen anything
-    if not selPatientIndex:
+    # Display a warning if the user hasn't chosen anything
+    if not selectedPatient:
         showwarning("Warning", "Please select a patient.")
         return None, None
-    if not selDocIndex:
+    if not selectedDoctor:
         showwarning("Warning", "Please select a doctor.")
         return None, None
 
-    selectedPatient = listbox_patient.get(selPatientIndex)
-    # only pass the name, not the ID number
+    # Only pass the name, not the ID number for the patient
     selectedPaName = selectedPatient.split(" ", 1)[1]
-    selectedDoc = listbox_doctor.get(selDocIndex)
-    print(selectedDoc)
-    # split selectedDoc into 5 parts
-    # then retrieve first name and last name, and combine them
-    selectedDocName = selectedDoc.split(" ", 4)[1] + " " + selectedDoc.split(" ", 4)[2]
-    print(selectedDocName)
+
+    # Split selectedDoctor into 5 parts, then retrieve first name and last name, and combine them
+    selectedDocName = selectedDoctor.split(" ", 4)[1] + " " + selectedDoctor.split(" ", 4)[2]
 
     return selectedPaName, selectedDocName
+
 
 # display the selected patient in the readonly entry box
 def selPaLabel(selected_patient):
@@ -180,25 +174,8 @@ def viewPatient():
         showerror("Error", "Choose a patient first!")
     else:
         selPatientName = selPatient.split(" ", 1)[1]
-        foundPatient = clinic.findPatient(selPatientName)
-
-        if foundPatient is not None:
-            # Get the assigned doctor for the patient
-            assignedDocName = foundPatient.myDoctor
-            print(assignedDocName)
-
-            # Find the corresponding doctor object
-            assignedDoc = clinic.findDoctor(assignedDocName)
-
-            patient_info = f"Patient Information\n\n\n"
-            patient_info += f"Patient: {foundPatient}\n\n"
-            patient_info += f"Doctor: \n{assignedDoc}\n\n"
-            patient_info += f"Consultations:\n{foundPatient.consulInfo()}\n\n"
-            patient_info += f"Total Fees Due: ${foundPatient.totalconFee()}"
-
-            showinfo("Patient Info", patient_info)
-        else:
-            showerror("Error", "No matching patient found.")
+        patient_info = clinic.getPatientInfo(selPatientName)
+        showinfo("Patient Info", patient_info)
 
 
 def viewDoctor():
@@ -208,28 +185,22 @@ def viewDoctor():
         showerror("Error", "Choose a doctor first!")
     else:
         foundDocName = selDoc.split(" ", 4)[1] + " " + selDoc.split(" ", 4)[2]
-        foundDoc = clinic.findDoctor(foundDocName)
+        doctor_info = clinic.getDocInfo(foundDocName)
 
-        if foundDoc is not None:
-            doctor_info = f"Doctor Information\n\n\n"
-            doctor_info += f"{foundDoc}\n\n"
-            doctor_info += f"Patient List\n{foundDoc.aPatient()}\n"
-            doctor_info += f"\nConsultations\n{foundDoc.consulInfo()}\n\n"
-
+        if doctor_info:
             showinfo("Doctor Info", doctor_info)
         else:
             showerror("Error", "No matching doctor found.")
 
 
-def consulReport():
-    report_window = tk.Toplevel(root)
-    report_window.title("Consultation Report")
-    report_window.geometry("600x400")
-    report_info = ""
-
+def viewConsulReport():
     if clinic.allConsultations:
-        report_info = "\n\n".join(str(aReport) for aReport in clinic.allConsultations)
-        report_label = tk.Label(report_window, text=report_info)
+        report_window = tk.Toplevel(root)
+        report_window.title("Consultation Report")
+        report_window.geometry("600x400")
+        report_header_label = tk.Label(report_window, text="Consultation Reports for XYZ Medical Center\n\n", font=("Arial", 14, "bold"))
+        report_header_label.pack()
+        report_label = tk.Label(report_window, text=clinic.consulReport())
         report_label.pack()
     else:
         print("no report")
@@ -402,7 +373,7 @@ button_searchDoc = tk.Button(searchFrame, text="Search Doctor", command=searchDo
 button_searchDoc.grid(row=2, column=1, sticky="w")
 
 searchLabel = tk.Label(
-    searchFrame, text="Search Result (click to select)", font=("Arial", 14, "bold")
+    searchFrame, text="Search Result (click a name to add to selected boxes above)", font=("Arial", 14, "bold")
 )
 searchLabel.grid(row=3, column=0, pady=10)
 
@@ -414,7 +385,7 @@ reportFrame = tk.Label(bottomFrame)
 reportFrame.grid(row=0, column=1)
 
 buttonReport = tk.Button(
-    reportFrame, text="Consultation Report", command=consulReport, width=20, height=2
+    reportFrame, text="Consultation Report", command=viewConsulReport, width=20, height=2
 )
 buttonReport.grid(row=0, column=0, padx=70, pady=40)
 
