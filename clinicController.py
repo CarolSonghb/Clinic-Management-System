@@ -116,7 +116,7 @@ class clinicController:
         aDoctor = self.findDoctor(doctorFullName)
         doctor_info = f"Doctor Information\n\n\n"
         doctor_info += f"{aDoctor}\n\n"
-        doctor_info += f"Patient List\n{aDoctor.aPatient()}\n"
+        doctor_info += f"Patient List\n{aDoctor.getPatientList()}\n"
         doctor_info += f"\nConsultations\n{aDoctor.consulInfo()}\n\n"
         return doctor_info
     

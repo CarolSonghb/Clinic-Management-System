@@ -100,9 +100,13 @@ class Doctor:
     def patientList(self):
         return self.__patientList
     
-    def aPatient(self):
+    def getPatientList(self):
+        if not self.patientList:
+            return None
+        patient_list = ""
         for aPatient in self.patientList:
-            return aPatient
+            patient_list += str(aPatient) + "\n"
+        return patient_list
     
     def addPatient(self, aPatient):
         self.patientList.append(aPatient)
