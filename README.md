@@ -2,8 +2,8 @@
 
 --------------------------------------------------------
 
-*This project is written in python, and used Tkinter as its GUI *
-*This is a straightforward clinic management system where you can: *
+*This project is written in python, and used Tkinter as its GUI*  
+*This is a straightforward clinic management system where you can:*
 1. View lists of Patients and Doctors
 2. Assign a patient to a doctor. If the patient you are assigning has been previous assigned a doctor, the new doctor will replace the old one. A doctor can have multiple patients.
 3. Add consultation details (date/reason/fee) for a doctor and a patient, but that doesn't assign them to each other.
